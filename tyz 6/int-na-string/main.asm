@@ -8,14 +8,19 @@ INCLUDE Irvine32.inc
 .code
 main PROC
 	call ClrScr
+	call ReadInt
+	call IntNaString
+
+	exit
+main ENDP
+
+IntNaString PROC USES eax ebx ecx edx esi
 	mov ecx, dlzka
 	mov cx, 10
 	mov ebx, 0
 	mov esi, 0
 	mov edx, 0
-	
-	call ReadInt
-	
+		
 	Cyklus:
 	
 	cmp eax, 0
@@ -42,7 +47,8 @@ main PROC
 		mov vystup[ebx], 0
 		mov edx, offset vystup
 		call WriteString
-		exit
 
-main ENDP
+		ret
+		IntNaString ENDP
+
 END main
