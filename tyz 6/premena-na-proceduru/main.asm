@@ -2,53 +2,37 @@ TITLE MASM Template						(main.asm)
 
 INCLUDE Irvine32.inc
 .data
-	dlzka equ 7
-	vystup DB dlzka dup(?), 0
+	
+	cisla DW 01h, 02h, 0Ah, 05h, 0
 
 .code
 main PROC
 	call ClrScr
-	call ReadInt
-	call IntNaString
 
-	exit
-main ENDP
-
-IntNaString PROC USES eax ebx ecx edx esi
-	mov ecx, dlzka
-	mov cx, 10
-	mov ebx, 0
-	mov esi, 0
-	mov edx, 0
-		
-	Cyklus:
-	
-	cmp eax, 0
-	jz Nacitaj
-	
-	div cx
-	add dx, '0'
-	push dx
-	mov dx, 0
-	inc esi
-	
+	mov ax, [cisla] 
+	mov edi, 0
 	jmp Cyklus
-
-	Nacitaj:
-		pop dx
-		mov vystup[ebx], dl
-		dec esi
-		inc ebx
-		cmp esi, 0
-		jne Nacitaj
 	
+	ZmenCislo:
+		mov ax, bx
+		jmp Cyklus
+
+	Cyklus:
+
+
+		mov bx, [cisla + 2*edi]
+		inc edi
+		cmp bx, 0
+		je Koniec
+		cmp bx, ax
+		jb ZmenCislo
+		jmp Cyklus
 
 	Koniec:
-		mov vystup[ebx], 0
-		mov edx, offset vystup
+		movzx eax, ax
 		call WriteString
+		exit
 
-		ret
-		IntNaString ENDP
+main ENDP
 
 END main
